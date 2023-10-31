@@ -16,7 +16,8 @@ namespace database{
 
         std::cout << "Connection string:" << _connection_string << std::endl;
          Poco::Data::MySQL::Connector::registerConnector();
-        _pool = std::make_unique<Poco::Data::SessionPool>(Poco::Data::MySQL::Connector::KEY, _connection_string);
+        std::string str = "host=192.168.100.173;user=stud;password=stud;compress=true;auto-reconnect=true;db=service";
+        _pool = std::make_unique<Poco::Data::SessionPool>(Poco::Data::MySQL::Connector::KEY, str);//_connection_string);
     }
 
     Database& Database::get(){
