@@ -26,7 +26,8 @@ SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(${EXAMPLE_BINARY} main.cpp
                                  config/config.cpp
                                  database/database.cpp
-                                 database/wall.cpp)
+                                 database/wall.cpp
+        web_server/http_web_server.h)
 
 
 target_include_directories(${EXAMPLE_BINARY} PRIVATE "${CMAKE_BINARY_DIR}")
@@ -45,7 +46,8 @@ target_link_libraries(${EXAMPLE_BINARY} PRIVATE
 
 
 
-add_executable(${OTHER_SERVICE} other_main.cpp)
+add_executable(${OTHER_SERVICE} other_main.cpp
+        web_server/http_web_server.h)
 target_include_directories(${OTHER_SERVICE} PRIVATE "${CMAKE_BINARY_DIR}")
 target_compile_options(${OTHER_SERVICE} PRIVATE -Wall -Wextra -pedantic -Werror )
 set_target_properties(${OTHER_SERVICE} PROPERTIES LINKER_LANGUAGE CXX)
