@@ -38,27 +38,25 @@ using Poco::Util::OptionSet;
 using Poco::Util::OptionCallback;
 using Poco::Util::HelpFormatter;
 
-#include "handlers/user_handler.h"
+#include "handlers/chat_handler.h"
 
 
 class HTTPRequestFactory: public HTTPRequestHandlerFactory
 {
 public:
-    HTTPRequestFactory(const std::string& format):
+    explicit HTTPRequestFactory(const std::string& format):
         _format(format)
     {
     }
 
     HTTPRequestHandler* createRequestHandler(
-        const HTTPServerRequest& request)
+        const HTTPServerRequest& request) override
     {
 
         std::cout << "request:" << request.getURI()<< std::endl;
-        if (hasSubstr(request.getURI(),"/user") ||
-            hasSubstr(request.getURI(),"/search") ||
-            hasSubstr(request.getURI(),"/auth")) 
-            return new UserHandler(_format);
-        return 0;
+        if (hasSubstr(request.getURI(),"/chat"))
+            return new ChatHandler(_format);
+        return nullptr;
     }
 
 private:

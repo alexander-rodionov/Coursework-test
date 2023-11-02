@@ -5,4 +5,4 @@ export DB_PASSWORD=stud
 export DB_DATABASE=service
 
 export LD_LIBRARY_PATH=/usr/local/lib
-./user/build/chat
+./chat/build/chat

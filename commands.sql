@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `Message_wall`
   	FOREIGN KEY (`user_id`) REFERENCES `Author`(`id`) ON DELETE CASCADE
     );
    
-   CREATE TABLE `Chat` (
+CREATE TABLE IF NOT EXISTS `Chat` (
   `id` INT NOT NULL AUTO_INCREMENT, 
   `user_id` INT NOT NULL,
   `message` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,

@@ -1,5 +1,5 @@
-#ifndef WALLHANDLER_H
-#define WALLHANDLER_H
+#ifndef CHATHANDLER_H
+#define CHATHANDLER_H
 
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Net/HTTPRequestHandler.h"
@@ -43,7 +43,7 @@ using Poco::Util::OptionCallback;
 using Poco::Util::OptionSet;
 using Poco::Util::ServerApplication;
 
-#include "../../database/wall.h"
+#include "../../database/chat.h"
 #include "../../helper.h"
 
 static bool hasSubstr(const std::string &str, const std::string &substr)
@@ -61,10 +61,10 @@ static bool hasSubstr(const std::string &str, const std::string &substr)
     return false;
 }
 
-class WallHandler : public HTTPRequestHandler
+class ChatHandler : public HTTPRequestHandler
 {
 public:
-     WallHandler(const std::string &format): _format(format){}
+     ChatHandler(const std::string &format): _format(format){}
 
     void handleRequest(HTTPServerRequest &request,
                        HTTPServerResponse &response) override
@@ -74,17 +74,17 @@ public:
         std::cout<<request.getMethod()<<std::endl;
         try
         {
-            if (form.has("user_id") && (request.getMethod() == Poco::Net::HTTPRequest::HTTP_GET) and hasSubstr(request.getURI(), "/wall"))
+            if (form.has("user_id") && (request.getMethod() == Poco::Net::HTTPRequest::HTTP_GET) and hasSubstr(request.getURI(), "/chat"))
             {
                 long user_id = atol(form.get("user_id").c_str());
-                std::vector<database::Wall> result = database::Wall::get(user_id);
+                std::vector<database::Chat> result = database::Chat::get(user_id);
                 if (!result.empty())
                 {
                     response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
                     response.setChunkedTransferEncoding(true);
                     response.setContentType("application/json");
                     std::ostream &ostr = response.send();
-                    for (const database::Wall& w : result)
+                    for (const database::Chat& w : result)
                     Poco::JSON::Stringifier::stringify(w.toJSON(), ostr);
                     return;
                 }
@@ -103,11 +103,11 @@ public:
                     Poco::JSON::Stringifier::stringify(root, ostr);
                     return;
                 }
-            } else if (((request.getMethod() == Poco::Net::HTTPRequest::HTTP_POST) and hasSubstr(request.getURI(), "/wall")))
+            } else if (((request.getMethod() == Poco::Net::HTTPRequest::HTTP_POST) and hasSubstr(request.getURI(), "/chat")))
             {
                 long user_id = std::stol(form.get("user_id"));
                 std::string message = form.get("message");
-                auto result = database::Wall::post(user_id, message);
+                auto result = database::Chat::post(user_id, message);
                 Poco::JSON::Array arr;
                 arr.add(result);
                 response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
