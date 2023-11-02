@@ -1,4 +1,0 @@
-`id` INT NOT NULL AUTO_INCREMENT,\n"
-                        << "`user_id` INT NOT NULL,\n"
-                        << "`content` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,\n"
-                        << "`created_at` DATETIME NOT NULL,\n"
