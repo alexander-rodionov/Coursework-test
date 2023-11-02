@@ -1,6 +1,5 @@
-drop database service;
-create database service;
-
+drop database if exists service;
+create database if not exists service;
 use service; 
 
 CREATE TABLE IF NOT EXISTS `Author`
@@ -16,9 +15,9 @@ CREATE TABLE IF NOT EXISTS `Author`
     );
 
 
-create index email_hash USING HASH  on Author(email);
-create index fn_ln using btree on Author(first_name,last_name);
-create index ln_fn using btree on Author(last_name,first_name);
+create index if not exists email_hash USING HASH  on Author(email);
+create index if not exists fn_ln using btree on Author(first_name,last_name);
+create index if not exists ln_fn using btree on Author(last_name,first_name);
 
 ----------------------------------
 
@@ -42,8 +41,6 @@ CREATE TABLE IF NOT EXISTS `Chat` (
   KEY `user_id` (`user_id`),  
   FOREIGN KEY (`user_id`) REFERENCES `Author`(`id`) ON DELETE CASCADE
     );
-   
-   
    
    --  10 пользователей
 INSERT INTO Author (first_name, last_name, email, title)
