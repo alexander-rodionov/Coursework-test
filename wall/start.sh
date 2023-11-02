@@ -5,5 +5,5 @@ export DB_PASSWORD=stud
 export DB_DATABASE=service
 
 export LD_LIBRARY_PATH=/usr/local/lib
-./build/hl_mai_lab_01
+./build/wall
 
