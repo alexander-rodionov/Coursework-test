@@ -1,6 +1,8 @@
-drop database if exists service;
-create database if not exists service;
-use service; 
+GRANT ALL PRIVILEGES ON *.* TO 'user'@'%' IDENTIFIED BY 'password';
+
+drop database if exists db;
+create database if not exists db;
+use db;
 
 CREATE TABLE IF NOT EXISTS `Author`
     (
