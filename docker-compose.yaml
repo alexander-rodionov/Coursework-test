@@ -1,3 +1,5 @@
+networks:
+  my_network:
 services:
   ubuntu-poco:
     image: ubuntu-poco
@@ -12,6 +14,10 @@ services:
       dockerfile: Dockerfile
     container_name: db_server
     restart: always
+    ports:
+      - "9000:3306"
+    networks:
+      - my_network
     environment:
       MYSQL_DATABASE: db
       MYSQL_USER: user
@@ -25,11 +31,19 @@ services:
       context: ./chat
       dockerfile: Dockerfile
     environment:
-      DB_HOST: 192.168.100.173
+      DB_HOST: database_server
       DB_PORT: 3306
       DB_LOGIN: user
       DB_PASSWORD: password
       DB_DATABASE: db
+    depends_on: 
+      - mariadb
+    ports:
+      - "9001:8080"
+    networks:
+      - my_network
+    links:
+      - mariadb:database_server
   wall:
     image: wall
     container_name: wall_service
@@ -38,11 +52,19 @@ services:
       context: ./wall
       dockerfile: Dockerfile
     environment:
-      DB_HOST: 192.168.100.173
+      DB_HOST: database_server
       DB_PORT: 3306
       DB_LOGIN: user
       DB_PASSWORD: password
       DB_DATABASE: db
+    depends_on: 
+      - mariadb
+    networks:
+      - my_network
+    ports:
+      - "9002:8080"
+    links:
+      - mariadb:database_server
   user:
     image: user
     container_name: user_service
@@ -51,8 +73,16 @@ services:
       context: ./user
       dockerfile: Dockerfile
     environment:
-      DB_HOST: 192.168.100.173
+      DB_HOST: database_server
       DB_PORT: 3306
       DB_LOGIN: user
       DB_PASSWORD: password
       DB_DATABASE: db
+    depends_on: 
+      - mariadb
+    networks:
+      - my_network
+    ports:
+      - "9003:8080"
+    links:
+      - mariadb:database_server

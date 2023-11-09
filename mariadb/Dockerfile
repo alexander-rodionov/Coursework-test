@@ -11,4 +11,4 @@ COPY commands.sql /docker-entrypoint-initdb.d/commands.sql
 COPY mysql.conf.d/ /etc/mysql/mysql.conf.d/
 EXPOSE 3306
 #ENTRYPOINT service ssh start && docker-entrypoint.sh mariadbd
-ENTRYPOINT docker-entrypoint.sh mariadbd
+#ENTRYPOINT docker-entrypoint.sh mariadbd
