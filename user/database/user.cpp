@@ -35,6 +35,7 @@ namespace database
                         << "`title` VARCHAR(1024) NULL,"
                         << "PRIMARY KEY (`id`),KEY `fn` (`first_name`),KEY `ln` (`last_name`));",
                 now;
+            std::cout << "Init OK" << std::endl;
         }
 
         catch (Poco::Data::MySQL::ConnectionException &e)

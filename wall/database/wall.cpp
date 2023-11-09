@@ -65,6 +65,7 @@ namespace database
                         << "KEY `user_id` (`user_id`), "
                         << "FOREIGN KEY (`user_id`) REFERENCES `Author`(`id`) ON DELETE CASCADE "
                         << ");", now;
+            std::cout << "Init OK" << std::endl;
         }
 
         catch (Poco::Data::MySQL::ConnectionException &e)
