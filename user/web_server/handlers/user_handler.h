@@ -126,10 +126,13 @@ public:
                        HTTPServerResponse &response)
     {
         HTMLForm form(request, request.stream());
+        std::cout<<"--- Handling request ---\n";
+        form.write(std::cout);
         try
         {
             if (form.has("id") && (request.getMethod() == Poco::Net::HTTPRequest::HTTP_GET))
             {
+                std::cout<<"in id handler"<<std::endl;
                 long id = atol(form.get("id").c_str());
 
                 std::optional<database::User> result = database::User::read_by_id(id);
@@ -160,7 +163,7 @@ public:
             }
             else if (hasSubstr(request.getURI(), "/auth"))
             {
-
+                std::cout<<"in auth handler"<<std::endl;
                 std::string scheme;
                 std::string info;
                 request.getCredentials(scheme, info);
@@ -170,6 +173,7 @@ public:
                 if (scheme == "Basic")
                 {
                     get_identity(info, login, password);
+
                     if (auto id = database::User::auth(login, password))
                     {
                         response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
@@ -196,7 +200,7 @@ public:
             }
             else if (hasSubstr(request.getURI(), "/search"))
             {
-
+                std::cout<<"in search handler"<<std::endl;
                 std::string fn = form.get("first_name");
                 std::string ln = form.get("last_name");
                 auto results = database::User::search(fn, ln);
@@ -213,6 +217,7 @@ public:
             }
             else if (request.getMethod() == Poco::Net::HTTPRequest::HTTP_POST)
             {
+                std::cout<<"in post handler"<<std::endl;
                 if (form.has("first_name") && form.has("last_name") && form.has("email") && form.has("title") && form.has("login") && form.has("password"))
                 {
                     database::User user;
@@ -269,8 +274,9 @@ public:
                 }
             }
         }
-        catch (...)
+        catch (const std::exception &exc)
         {
+            std::cerr << exc.what()<<std::endl;
         }
 
         response.setStatus(Poco::Net::HTTPResponse::HTTPStatus::HTTP_NOT_FOUND);

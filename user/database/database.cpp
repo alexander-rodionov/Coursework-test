@@ -1,6 +1,8 @@
 #include "database.h"
 #include "../config/config.h"
 
+
+
 namespace database{
     Database::Database(){
         _connection_string+="host=";
@@ -28,5 +30,6 @@ namespace database{
     Poco::Data::Session Database::create_session(){
         return Poco::Data::Session(_pool->get());
     }
+
 
 }
