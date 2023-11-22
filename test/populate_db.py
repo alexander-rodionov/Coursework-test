@@ -8,7 +8,7 @@ RUN_LOCAL = True
 with open('../docker-compose.yaml', 'r') as f:
     docker_compose = yaml.safe_load(f)
 PROXYSQL_HOST = 'proxysql'
-PROXYSQL_PORT = int(docker_compose['services']['proxysql']['ports'][0].split(':')[0])
+PROXYSQL_PORT = int(docker_compose['services']['proxysql']['ports'][0].split(':')[1])
 USER = 'user'
 PASSWORD = 'password'
 
