@@ -1,6 +1,9 @@
 import base64
+import time
 
 from requests import get, post
+
+time.sleep(10)
 
 url_user = 'http://172.20.0.1:9003'
 url_wall = 'http://172.20.0.1:9002'

@@ -27,9 +27,9 @@ services:
       MYSQL_ROOT_PASSWORD: root
     healthcheck:
       test: "/usr/bin/mariadb --user=user --password=password --execute \"SHOW DATABASES;\""
-      interval: 15s
-      timeout: 1s
-      retries: 5
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   mariadb-2:
     image: mariadb_server
@@ -49,9 +49,9 @@ services:
       MYSQL_ROOT_PASSWORD: root
     healthcheck:
       test: "/usr/bin/mariadb --user=user --password=password --execute \"SHOW DATABASES;\""
-      interval: 15s
-      timeout: 1s
-      retries: 5
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   mariadb-3:
     image: mariadb_server
@@ -71,9 +71,9 @@ services:
       MYSQL_ROOT_PASSWORD: root
     healthcheck:
       test: "/usr/bin/mariadb --user=user --password=password --execute \"SHOW DATABASES;\""
-      interval: 15s
-      timeout: 1s
-      retries: 5
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   proxysql:
     image: proxysql
@@ -87,6 +87,7 @@ services:
 #      - proxysql-data:/var/lib/proxysql
     healthcheck:
       test: "/usr/bin/mysql -h proxysql -P 6033 -u user -ppassword --execute \"SHOW DATABASES;\""
+      interval: 5s
       timeout: 5s
       retries: 20
     networks:
@@ -115,71 +116,85 @@ services:
       proxysql:
         condition: service_healthy
 
-#   chat:
-#     image: chat
-#     container_name: chat_service
-#     restart: always
-#     build:
-#       context: ./chat
-#       dockerfile: Dockerfile
-#     environment:
-#       DB_HOST: proxysql
-#       DB_PORT: 6033
-#       DB_LOGIN: user
-#       DB_PASSWORD: password
-#       DB_DATABASE: db
-#     depends_on: 
-#       python_loader:
-#         condition: service_completed_successfully
-#     ports:
-#       - "9001:8080"
-#     networks:
-#       - my_network
-# #    links:
-# #      - proxysql:database_server
+  chat:
+    image: chat
+    container_name: chat_service
+    restart: always
+    build:
+      context: ./chat
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: proxysql
+      DB_PORT: 6033
+      DB_LOGIN: user
+      DB_PASSWORD: password
+      DB_DATABASE: db
+    depends_on: 
+      python_loader:
+        condition: service_completed_successfully
+    ports:
+      - "9001:8080"
+    networks:
+      - my_network
+#    links:
+#      - proxysql:database_server
 
-#   wall:
-#     image: wall
-#     container_name: wall_service
-#     restart: always
-#     build:
-#       context: ./wall
-#       dockerfile: Dockerfile
-#     environment:
-#       DB_HOST: proxysql
-#       DB_PORT: 6033
-#       DB_LOGIN: user
-#       DB_PASSWORD: password
-#       DB_DATABASE: db
-#     depends_on: 
-#       python_loader:
-#         condition: service_completed_successfully
-#     networks:
-#       - my_network
-#     ports:
-#       - "9002:8080"
-# #    links:
-# #      - proxysql:database_server
+  wall:
+    image: wall
+    container_name: wall_service
+    restart: always
+    build:
+      context: ./wall
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: proxysql
+      DB_PORT: 6033
+      DB_LOGIN: user
+      DB_PASSWORD: password
+      DB_DATABASE: db
+    depends_on: 
+      python_loader:
+        condition: service_completed_successfully
+    networks:
+      - my_network
+    ports:
+      - "9002:8080"
+#    links:
+#      - proxysql:database_server
 
-#   user:
-#     image: user
-#     container_name: user_service
-#     restart: always
-#     build:
-#       context: ./user
-#       dockerfile: Dockerfile
-#     environment:
-#       DB_HOST: proxysql
-#       DB_PORT: 6033
-#       DB_LOGIN: user
-#       DB_PASSWORD: password
-#       DB_DATABASE: db
-#     depends_on: 
-#       python_loader:
-#         condition: service_completed_successfully
-#     networks:
-#       - my_network
-#     ports:
-#       - "9003:8080"
-# #    links:
-# #      - proxysql:database_server
+  user:
+    image: user
+    container_name: user_service
+    restart: always
+    build:
+      context: ./user
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: proxysql
+      DB_PORT: 6033
+      DB_LOGIN: user
+      DB_PASSWORD: password
+      DB_DATABASE: db
+    depends_on: 
+      python_loader:
+        condition: service_completed_successfully
+    networks:
+      - my_network
+    ports:
+      - "9003:8080"
+#    links:
+#      - proxysql:database_server
+
+  test:
+    image: py
+    build:
+      context: ./test 
+      dockerfile: Dockerfile
+    container_name: python_loader
+    command: "test.py"
+    networks:
+      - my_network
+    restart: "no"
+    depends_on:
+      user:
+        condition: service_healthy
