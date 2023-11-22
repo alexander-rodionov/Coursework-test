@@ -2,7 +2,7 @@ import contextlib
 import yaml
 import mariadb
 
-RUN_LOCAL = False
+RUN_LOCAL = True
 
 # получение данных о подключении
 with open('../docker-compose.yaml', 'r') as f:
@@ -34,7 +34,7 @@ def exec_sql_returning(sql):
         conn.close()
     except Exception as e:
         print(e)
-        quit()
+        quit(-1)
 
 
 def exec_sql(sql):
@@ -53,7 +53,7 @@ def exec_sql(sql):
         conn.close()
     except Exception as e:
         print(e)
-        quit()
+        quit(-1)
 
 
 # проверить наличие таблицы users
