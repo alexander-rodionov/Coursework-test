@@ -86,9 +86,9 @@ services:
 #    volumes:
 #      - proxysql-data:/var/lib/proxysql
     healthcheck:
-      test: "/usr/bin/mysql --user=user --password=password --execute \"SHOW DATABASES;\""
-      timeout: 20s
-      retries: 5
+      test: "/usr/bin/mysql -h proxysql -P 6033 -u user -ppassword --execute \"SHOW DATABASES;\""
+      timeout: 5s
+      retries: 20
     networks:
       - my_network
     ports:
@@ -109,8 +109,8 @@ services:
       context: ./chat
       dockerfile: Dockerfile
     environment:
-      DB_HOST: database_server
-      DB_PORT: 3306
+      DB_HOST: proxysql
+      DB_PORT: 6033
       DB_LOGIN: user
       DB_PASSWORD: password
       DB_DATABASE: db
@@ -121,8 +121,8 @@ services:
       - "9001:8080"
     networks:
       - my_network
-    links:
-      - proxysql:database_server
+#    links:
+#      - proxysql:database_server
 
   wall:
     image: wall
@@ -132,8 +132,8 @@ services:
       context: ./wall
       dockerfile: Dockerfile
     environment:
-      DB_HOST: database_server
-      DB_PORT: 3306
+      DB_HOST: proxysql
+      DB_PORT: 6033
       DB_LOGIN: user
       DB_PASSWORD: password
       DB_DATABASE: db
@@ -144,8 +144,8 @@ services:
       - my_network
     ports:
       - "9002:8080"
-    links:
-      - proxysql:database_server
+#    links:
+#      - proxysql:database_server
 
   user:
     image: user
@@ -155,8 +155,8 @@ services:
       context: ./user
       dockerfile: Dockerfile
     environment:
-      DB_HOST: database_server
-      DB_PORT: 3306
+      DB_HOST: proxysql
+      DB_PORT: 6033
       DB_LOGIN: user
       DB_PASSWORD: password
       DB_DATABASE: db
@@ -167,5 +167,5 @@ services:
       - my_network
     ports:
       - "9003:8080"
-    links:
-      - proxysql:database_server
+#    links:
+#      - proxysql:database_server
