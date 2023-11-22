@@ -5,7 +5,7 @@ import mariadb
 RUN_LOCAL = False
 
 # получение данных о подключении
-with open('/root/docker-compose.yaml', 'r') as f:
+with open('../docker-compose.yaml', 'r') as f:
     docker_compose = yaml.safe_load(f)
 PROXYSQL_HOST = 'proxysql' if RUN_LOCAL else '172.17.0.1'
 PROXYSQL_PORT = int('3306') if RUN_LOCAL \
