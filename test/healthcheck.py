@@ -1,6 +1,7 @@
 # получение данных о подключении
 import contextlib
 
+import mariadb
 import yaml
 
 RUN_LOCAL = True
