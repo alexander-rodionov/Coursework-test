@@ -45,6 +45,7 @@ using Poco::Util::ServerApplication;
 
 #include "../../database/user.h"
 #include "../../helper.h"
+#include "../../config/config.h"
 
 static bool hasSubstr(const std::string &str, const std::string &substr)
 {
@@ -110,6 +111,7 @@ private:
         return true;
     };
 
+
 public:
     UserHandler(const std::string &format) : _format(format)
     {
@@ -125,6 +127,8 @@ public:
     void handleRequest(HTTPServerRequest &request,
                        HTTPServerResponse &response)
     {
+        Config& cfg = Config::get();
+
         HTMLForm form(request, request.stream());
         std::cout<<"--- Handling request ---\n";
         form.write(std::cout);
@@ -135,9 +139,17 @@ public:
                 std::cout<<"in id handler"<<std::endl;
                 long id = atol(form.get("id").c_str());
 
-                std::optional<database::User> result = database::User::read_by_id(id);
+                bool cache_hit = false;
+                std::optional<database::User> result =  std::nullopt;
+                if (cfg.get_cache_enabled()){
+                    result = database::User::read_from_cache_by_id(id);
+                    if (result) cache_hit = true;
+                }
+                if (!result) result = database::User::read_by_id(id);
+
                 if (result)
                 {
+                    if (!cache_hit && cfg.get_cache_enabled()) result->save_to_cache();
                     response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
                     response.setChunkedTransferEncoding(true);
                     response.setContentType("application/json");
@@ -174,13 +186,13 @@ public:
                 {
                     get_identity(info, login, password);
 
-                    if (auto id = database::User::auth(login, password))
+                    if (auto id_ = database::User::auth(login, password))
                     {
                         response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
                         response.setChunkedTransferEncoding(true);
                         response.setContentType("application/json");
                         std::ostream &ostr = response.send();
-                        ostr << "{ \"id\" : \"" << *id << "\"}" << std::endl;
+                        ostr << "{ \"id\" : \"" << *id_ << "\"}" << std::endl;
                         return;
                     }
                 }

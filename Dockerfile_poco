@@ -2,8 +2,9 @@ FROM ubuntu
 
 RUN apt-get -y update
 RUN apt-get -y install --fix-missing
-RUN apt-get -y install --fix-missing cmake make git build-essential libssl-dev mysql-client zlib1g-dev libmysqlclient-dev
-
+RUN apt-get -y install --fix-missing cmake make git build-essential libssl-dev mysql-client zlib1g-dev libmysqlclient-dev libboost-all-dev
 WORKDIR /root
+RUN git clone https://github.com/tdv/redis-cpp.git 
+RUN cd redis-cpp && mkdir build && cd build && cmake .. && make && sudo make install && cd .. && cd .. 
 RUN git clone -b poco-1.11.7-release https://github.com/pocoproject/poco.git
 RUN cd poco && mkdir cmake-build && cd cmake-build && cmake .. && make && make install && cd .. && cd ..

@@ -8,6 +8,7 @@
 #include <Poco/Data/RecordSet.h>
 #include <Poco/JSON/Parser.h>
 #include <Poco/Dynamic/Var.h>
+#include "cache.h"
 
 #include <sstream>
 #include <exception>
@@ -378,5 +379,31 @@ namespace database
     std::string &User::title()
     {
         return _title;
+    }
+
+    std::optional<User> User::read_from_cache_by_id(long id)
+    {
+
+        try
+        {
+            std::string result;
+            if (database::Cache::get().get(id, result))
+                return fromJSON(result);
+            else
+                return std::optional<User>();
+        }
+        catch (std::exception& err)
+        {
+            // std::cerr << "error:" << err.what() << std::endl;
+            return std::optional<User>();
+        }
+    }
+
+    void User::save_to_cache()
+    {
+        std::stringstream ss;
+        Poco::JSON::Stringifier::stringify(toJSON(), ss);
+        std::string message = ss.str();
+        database::Cache::get().put(_id, message);
     }
 }

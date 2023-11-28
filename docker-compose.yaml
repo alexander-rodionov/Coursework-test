@@ -102,6 +102,16 @@ services:
       - mariadb-2
       - mariadb-3
 
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning 
+    networks:
+      - my_network
+
+
   python_loader:
     image: py
     build:
@@ -115,6 +125,8 @@ services:
     depends_on:
       proxysql:
         condition: service_healthy
+      cache:
+        condition: service_started
 
   chat:
     image: chat
