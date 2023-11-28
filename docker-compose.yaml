@@ -106,7 +106,7 @@ services:
     image: redis:6.2-alpine
     restart: always
     ports:
-      - '6379:6379'
+      - '9100:6379'
     command: redis-server --save 20 1 --loglevel warning 
     networks:
       - my_network
@@ -187,6 +187,8 @@ services:
       DB_LOGIN: user
       DB_PASSWORD: password
       DB_DATABASE: db
+      CACHE: cache:6379
+      CACHE_ENABLED: "TRUE"
     depends_on: 
       python_loader:
         condition: service_completed_successfully

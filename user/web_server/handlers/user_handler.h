@@ -127,7 +127,6 @@ public:
     void handleRequest(HTTPServerRequest &request,
                        HTTPServerResponse &response)
     {
-        Config& cfg = Config::get();
 
         HTMLForm form(request, request.stream());
         std::cout<<"--- Handling request ---\n";
@@ -139,9 +138,12 @@ public:
                 std::cout<<"in id handler"<<std::endl;
                 long id = atol(form.get("id").c_str());
 
+                bool no_cache = false;
+                if (form.has("no_cache")) no_cache = true;
+
                 bool cache_hit = false;
                 std::optional<database::User> result =  std::nullopt;
-                if (cfg.get_cache_enabled()){
+                if (!no_cache){
                     result = database::User::read_from_cache_by_id(id);
                     if (result) cache_hit = true;
                 }
@@ -149,7 +151,7 @@ public:
 
                 if (result)
                 {
-                    if (!cache_hit && cfg.get_cache_enabled()) result->save_to_cache();
+                    if (!cache_hit && !no_cache) result->save_to_cache();
                     response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
                     response.setChunkedTransferEncoding(true);
                     response.setContentType("application/json");
