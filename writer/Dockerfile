@@ -6,4 +6,4 @@ RUN cd Coursework-test/writer && mkdir build && cd build && cmake .. && make && 
 
 ENV LD_LIBRARY_PATH=/usr/local/lib
 EXPOSE 8080
-ENTRYPOINT ./Coursework-test/user/build/writer
+ENTRYPOINT ./Coursework-test/writer/build/writer
