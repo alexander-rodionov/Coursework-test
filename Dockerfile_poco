@@ -9,3 +9,9 @@ RUN git clone https://github.com/tdv/redis-cpp.git
 RUN cd redis-cpp && mkdir build && cd build && cmake .. && make && sudo make install && cd .. && cd .. 
 RUN git clone -b poco-1.11.7-release https://github.com/pocoproject/poco.git
 RUN cd poco && mkdir cmake-build && cd cmake-build && cmake .. && make && make install && cd .. && cd ..
+RUN git clone https://github.com/edenhill/librdkafka.git 
+RUN cd librdkafka && ./configure && make && sudo make install && cd ..
+RUN git clone https://github.com/mfontanini/cppkafka 
+RUN cd cppkafka && mkdir build && cd build && cmake .. && make && sudo make install && cd .. && cd .. 
+RUN git clone -b lab-04 https://github.com/alexander-rodionov/Coursework-test.git
+

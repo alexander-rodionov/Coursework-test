@@ -112,6 +112,39 @@ services:
       - my_network
 
 
+  kafka1:
+    image: 'bitnami/kafka:latest'
+    container_name: kafka1
+    ports:
+      - "2181:9181"
+      - "9092:9192"
+    environment:
+      KAFKA_ENABLE_KRAFT: "yes"
+      KAFKA_CFG_PROCESS_ROLES: "broker,controller"
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: "CONTROLLER"
+      KAFKA_CFG_LISTENERS: "PLAINTEXT://:9092,CONTROLLER://:9093"
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT"
+      KAFKA_CFG_ADVERTISED_LISTENERS: "PLAINTEXT://kafka1:9092"
+      KAFKA_BROKER_ID: 1
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: "1@kafka1:9093"
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_KRAFT_CLUSTER_ID: "dh6khitPSDGZSBOjNeTC_g"
+
+    networks:
+      - my_network
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:v0.4.0
+    ports:
+      - "8888:9080"
+    environment:
+      KAFKA_CLUSTERS_0_BOOTSTRAP_SERVERS: "kafka1:9092"
+      KAFKA_CLUSTERS_0_NAME: "kraft"
+    networks:
+      - my_network
+
+
   python_loader:
     image: py
     build:
@@ -127,6 +160,39 @@ services:
         condition: service_healthy
       cache:
         condition: service_started
+
+  writer:
+    image: writer
+    container_name: writer_service
+    restart: always
+    build:
+      context: ./writer
+      dockerfile: Dockerfile
+    environment:      
+      KAFKA_ENABLE_KRAFT: "yes"
+      KAFKA_CFG_PROCESS_ROLES: "broker,controller"
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: "CONTROLLER"
+      KAFKA_CFG_LISTENERS: "PLAINTEXT://:9092,CONTROLLER://:9093"
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT"
+      KAFKA_CFG_ADVERTISED_LISTENERS: "PLAINTEXT://kafka1:9092"
+      KAFKA_BROKER_ID: 1
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: "1@kafka1:9093"
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_KRAFT_CLUSTER_ID: "dh6khitPSDGZSBOjNeTC_g"
+      DB_HOST: proxysql
+      DB_PORT: 6033
+      DB_LOGIN: user
+      DB_PASSWORD: password
+      DB_DATABASE: db
+    depends_on: 
+      python_loader:
+        condition: service_completed_successfully
+    ports:
+      - "9001:8080"
+    networks:
+      - my_network
+
 
   chat:
     image: chat
@@ -144,6 +210,8 @@ services:
     depends_on: 
       python_loader:
         condition: service_completed_successfully
+      writer:
+        condition: service_started
     ports:
       - "9001:8080"
     networks:
@@ -167,6 +235,8 @@ services:
     depends_on: 
       python_loader:
         condition: service_completed_successfully
+      writer:
+        condition: service_started        
     networks:
       - my_network
     ports:
@@ -192,6 +262,8 @@ services:
     depends_on: 
       python_loader:
         condition: service_completed_successfully
+      writer:
+        condition: service_started        
     networks:
       - my_network
     ports:

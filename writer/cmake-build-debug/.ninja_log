@@ -1,0 +1,7 @@
+# ninja log v5
+0	83	1701284221447651292	build.ninja	f494bf8ae7a17102
+1	813	1701284186683172904	CMakeFiles/writer.dir/writer_main.cpp.o	515c790fe5a11921
+1	769	1701284171650965829	CMakeFiles/writer.dir/database/database.cpp.o	2eed1cef43f8c28f
+1	109	1701284170990956735	CMakeFiles/writer.dir/config/config.cpp.o	4697cba9bb7a12d3
+1	1150	1701284270016318701	CMakeFiles/writer.dir/database/user.cpp.o	2fbc3405f93c3677
+1150	1245	1701284270108319964	writer	49e04e5875ede139
