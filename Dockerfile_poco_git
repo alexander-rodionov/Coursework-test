@@ -1,0 +1,6 @@
+FROM ubuntu-poco
+
+WORKDIR /root
+RUN cd cppkafka && mkdir build && cd build && cmake .. && make && sudo make install && cd .. && cd .. 
+RUN git clone -b lab-04 https://github.com/alexander-rodionov/Coursework-test.git
+

@@ -1,4 +1,4 @@
-FROM ubuntu-poco
+FROM ubuntu-poco-git
 
 WORKDIR /root
 ARG USELESS=1

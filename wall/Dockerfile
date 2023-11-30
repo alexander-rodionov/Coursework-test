@@ -1,4 +1,4 @@
-FROM ubuntu-poco
+FROM ubuntu-poco-git
 
 WORKDIR /root
 RUN cd Coursework-test/wall && mkdir build && cd build && cmake .. && make && cd ../../..

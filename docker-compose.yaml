@@ -10,6 +10,14 @@ services:
       dockerfile: Dockerfile_poco
     command: /bin/true
 
+  ubuntu-poco-git:
+    image: ubuntu-poco-git
+    container_name: ubuntu-poco-git
+    build: 
+      context: .
+      dockerfile: Dockerfile_poco_git
+    command: /bin/true
+
   mariadb-1:
     image: mariadb_server
     build:
@@ -279,7 +287,6 @@ services:
 
   test:
     image: py
-    container_name: test
     build:
       context: ./test 
       dockerfile: Dockerfile
