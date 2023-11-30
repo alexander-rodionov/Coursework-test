@@ -27,7 +27,8 @@ add_executable(writer
         database/user.cpp
         database/user.h
         writer_main.cpp
-        database/user.cpp)
+        database/user.cpp
+)
 
 set_target_properties(writer PROPERTIES LINKER_LANGUAGE CXX)
 set_target_properties(writer PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
@@ -40,3 +41,4 @@ target_link_libraries(writer PRIVATE
         "rdkafka++"
         CppKafka::cppkafka
         ZLIB::ZLIB)
+

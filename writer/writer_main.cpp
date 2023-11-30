@@ -5,11 +5,11 @@
 #include "config/config.h"
 #include "database/user.h"
 
-
 bool running = true;
 
 int main()
 {
+
     try
     {
         // Stop processing on SIGINT

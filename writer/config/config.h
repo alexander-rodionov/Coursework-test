@@ -18,7 +18,6 @@ class  Config{
         std::string _queue_group_id;
     public:
         static Config& get();
-
         std::string& queue_group_id();
         std::string& queue_host();
         std::string& queue_topic();
@@ -38,6 +37,14 @@ class  Config{
         const std::string& get_password() const ;
         const std::string& get_database() const ;
         const std::string& get_cache_servers() const;
+
+        static std::string get_env(const std::string &key){
+            char * res = std::getenv(key.c_str());
+            if (res == nullptr)
+                return "";
+            else
+                return std::string(res);
+    }
 };
 
 #endif
