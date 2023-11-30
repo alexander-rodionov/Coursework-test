@@ -20,6 +20,7 @@ int main()
         cppkafka::Configuration config = {
             {"metadata.broker.list", Config::get().get_queue_host()},
             {"group.id", Config::get().get_queue_group_id()},
+            {"bootstrap.servers", Config::get().get_bootstrap_servers()},
             // Disable auto commit
             {"enable.auto.commit", false}};
 

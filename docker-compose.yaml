@@ -199,6 +199,7 @@ services:
       DB_LOGIN: user
       DB_PASSWORD: password
       DB_DATABASE: db
+      BOOTSTRAP_SERVERS: "kafka1:9092"
     depends_on: 
       python_loader:
         condition: service_completed_successfully

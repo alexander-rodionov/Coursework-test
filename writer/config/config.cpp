@@ -12,6 +12,7 @@ Config::Config()
     _queue_host = get_env("QUEUE_HOST");
     _queue_topic = get_env("QUEUE_TOPIC");
     _queue_group_id = get_env("QUEUE_GROUP_ID");
+    _bootstrap_servers = get_env("BOOTSTRAP_SERVERS");
 }
 
 
@@ -85,6 +86,12 @@ const std::string &Config::get_database() const
     return _database;
 }
 
+const std::string &Config::get_bootstrap_servers() const
+{
+    return _bootstrap_servers;
+}
+
+
 std::string &Config::port()
 {
     return _port;
@@ -109,3 +116,4 @@ std::string &Config::database()
 {
     return _database;
 }
+
