@@ -1,3 +1,0 @@
-/home/alex/C++/service/buligin/Coursework-test/writer/cmake-build-debug/CMakeFiles/writer.dir
-/home/alex/C++/service/buligin/Coursework-test/writer/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/alex/C++/service/buligin/Coursework-test/writer/cmake-build-debug/CMakeFiles/rebuild_cache.dir
