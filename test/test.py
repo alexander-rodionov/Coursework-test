@@ -5,9 +5,9 @@ from requests import get, post
 
 time.sleep(10)
 
-url_user = 'http://172.20.0.1:9003'
-url_wall = 'http://172.20.0.1:9002'
-url_chat = 'http://172.20.0.1:9001'
+url_user = 'http://user_service:8080'
+url_wall = 'http://wall_service:8080'
+url_chat = 'http://char_service:8080'
 
 # вызовы user
 call = url_user+'/auth'
