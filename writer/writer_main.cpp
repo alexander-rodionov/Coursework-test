@@ -73,6 +73,9 @@ int main()
                     consumer.commit(msg);
                 }
             }
+            else {
+                std::cout<<"No message"<<std::endl;
+            }
         }
     }
     catch (const std::exception &e)

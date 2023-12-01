@@ -1,4 +1,5 @@
 #include "config.h"
+#include <iostream>
 
 Config::Config()
 {
@@ -23,6 +24,16 @@ Config::Config()
     _queue_host = get_env("QUEUE_HOST");
     _queue_topic = get_env("QUEUE_TOPIC");
     _queue_group_id = get_env("QUEUE_GROUP_ID");
+
+    std::cout<<_host<<std::endl;
+    std::cout<<_port<<std::endl;
+    std::cout<<_login<<std::endl;
+    std::cout<<_password<<std::endl;
+    std::cout<<_database<<std::endl;
+    std::cout<<_cache_servers<<std::endl;
+    std::cout<<_queue_host<<std::endl;
+    std::cout<<_queue_topic<<std::endl;
+    std::cout<<_queue_group_id<<std::endl;
 }
 
 
