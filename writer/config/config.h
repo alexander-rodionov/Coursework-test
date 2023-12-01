@@ -36,7 +36,6 @@ class  Config{
         const std::string& get_login() const ;
         const std::string& get_password() const ;
         const std::string& get_database() const ;
-        const std::string& get_bootstrap_servers() const;
 
         static std::string get_env(const std::string &key){
             char * res = std::getenv(key.c_str());

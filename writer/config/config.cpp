@@ -10,7 +10,7 @@ Config::Config()
         setenv("DB_PASSWORD","password",0);
         setenv("DB_DATABASE","db",0);
         setenv("CACHE","172.30.0.1:9100",0);
-        setenv("QUEUE_HOST","172.30.0.1:9181",0);
+        setenv("QUEUE_HOST","172.30.0.1:9192",0);
         setenv("QUEUE_TOPIC","event_server",0);
         setenv("QUEUE_GROUP_ID","0",0);
     }
@@ -96,12 +96,6 @@ const std::string &Config::get_database() const
 {
     return _database;
 }
-
-const std::string &Config::get_bootstrap_servers() const
-{
-    return _bootstrap_servers;
-}
-
 
 std::string &Config::port()
 {
