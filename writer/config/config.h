@@ -27,7 +27,6 @@ class  Config{
         std::string& login();
         std::string& password();
         std::string& database();
-        std::string& cache_servers();
 
         const std::string& get_queue_group_id() const;
         const std::string& get_queue_host() const ;
@@ -37,7 +36,6 @@ class  Config{
         const std::string& get_login() const ;
         const std::string& get_password() const ;
         const std::string& get_database() const ;
-        const std::string& get_cache_servers() const;
         const std::string& get_bootstrap_servers() const;
 
         static std::string get_env(const std::string &key){
@@ -45,7 +43,7 @@ class  Config{
             if (res == nullptr)
                 return "";
             else
-                return std::string(res);
+                return {res};
     }
 };
 
