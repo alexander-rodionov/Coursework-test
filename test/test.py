@@ -7,7 +7,7 @@ time.sleep(10)
 
 url_user = 'http://user:8080'
 url_wall = 'http://wall:8080'
-url_chat = 'http://char:8080'
+url_chat = 'http://chat:8080'
 
 # вызовы user
 call = url_user+'/auth'
