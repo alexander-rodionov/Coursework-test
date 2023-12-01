@@ -9,6 +9,8 @@ services:
       context: .
       dockerfile: Dockerfile_poco
     command: /bin/true
+    networks:
+      - my_network
 
   ubuntu-poco-git:
     image: ubuntu-poco-git
@@ -17,6 +19,8 @@ services:
       context: .
       dockerfile: Dockerfile_poco_git
     command: /bin/true
+    networks:
+      - my_network
 
   mariadb-1:
     image: mariadb_server
